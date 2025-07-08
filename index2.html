@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARC - AI Marketing Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #1a1a1a;
+            border-right: 1px solid #333;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            color: #9ca3af;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #374151;
+            color: #ffffff;
+        }
+
+        .nav-link.active {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 300;
+            color: #ffffff;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .dashboard-title {
+            font-size: 48px;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-subtitle {
+            font-size: 18px;
+            color: #9ca3af;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dashboard-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .dashboard-card:hover {
+            background: #262626;
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: #3b82f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .card-description {
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 16px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+
+        .btn-secondary:hover {
+            background: #3b82f6;
+            color: #ffffff;
+        }
+
+        /* Voice Interface */
+        .voice-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .voice-title {
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.3;
+            margin-bottom: 48px;
+        }
+
+        .voice-orb {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .voice-orb:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .voice-orb.active {
+            animation: pulse 2s infinite;
+        }
+
+        .voice-center {
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .voice-instruction {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* Lead Generation Styles */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .audience-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .audience-label {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .audience-value {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .interests-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .interest-tag {
+            background: #374151;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* Google Optimization Styles */
+        .business-info {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .info-section {
+            margin-bottom: 24px;
+        }
+
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #3b82f6;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .photos-container {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .photo-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #374151;
+        }
+
+        .photo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: #1a1a1a;
+            border: 2px dashed #333;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .photo-upload:hover {
+            border-color: #3b82f6;
+        }
+
+        .upload-icon {
+            color: #3b82f6;
+            margin-bottom: 4px;
+        }
+
+        .upload-text {
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                order: 2;
+                padding: 16px;
+            }
+            
+            .main-content {
+                order: 1;
+            }
+            
+            .content-area {
+                padding: 16px;
+            }
+            
+            .dashboard-title {
+                font-size: 32px;
+            }
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">M</div>
+                <span class="logo-text">MARC</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-screen="dashboard">
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-screen="profile">
+                        Business Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-screen="leads">
+                        Lead Generation
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-screen="content">
+                        Content Creation
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-screen="google">
+                        Google Optimization
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-screen="voice">
+                        Voice Interface
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-screen="analytics">
+                        Analytics
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1 id="page-title">Dashboard</h1>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard Screen -->
+                <div id="dashboard-screen" class="screen">
+                    <div class="dashboard-header">
+                        <h2 class="dashboard-title">You speak.<br>It listens.</h2>
+                        <p class="dashboard-subtitle">Your AI marketing assistant is ready to help grow your business</p>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card" onclick="switchScreen('profile')">
+                            <div class="card-icon">👤</div>
+                            <h3 class="card-title">Business Profile</h3>
+                            <p class="card-description">Set up your business profile so MARC can tailor your marketing</p>
+                        </div>
+
+                        <div class="dashboard-card" onclick="switchScreen('leads')">
+                            <div class="card-icon">🎯</div>
+                            <h3 class="card-title">Generate Online Leads</h3>
+                            <p class="card-description">Target and attract potential customers with AI-powered lead generation</p>
+                        </div>
+
+                        <div class="dashboard-card" onclick="switchScreen('content')">
+                            <div class="card-icon">✍️</div>
+                            <h3 class="card-title">Create Content</h3>
+                            <p class="card-description">Generate social media posts, blog content, and marketing materials</p>
+                        </div>
+
+                        <div class="dashboard-card" onclick="switchScreen('google')">
+                            <div class="card-icon">🔍</div>
+                            <h3 class="card-title">Optimize Google</h3>
+                            <p class="card-description">Manage your Google Business Profile and local search presence</p>
+                        </div>
+
+                        <div class="dashboard-card" onclick="switchScreen('voice')">
+                            <div class="card-icon">🎤</div>
+                            <h3 class="card-title">Voice Commands</h3>
+                            <p class="card-description">Use voice commands to control MARC and create content hands-free</p>
+                        </div>
+
+                        <div class="dashboard-card" onclick="switchScreen('analytics')">
+                            <div class="card-icon">📊</div>
+                            <h3 class="card-title">Analytics</h3>
+                            <p class="card-description">Track your marketing performance and measure success</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Profile Screen -->
+                <div id="profile-screen" class="screen hidden">
+                    <div class="form-container">
+                        <div class="text-center mb-6">
+                            <h2 class="dashboard-title">Set up your profile</h2>
+                            <p class="dashboard-subtitle">Tell us about your business so we can tailor your marketing</p>
+                        </div>
+
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label class="form-label">Business Name</label>
+                                <input type="text" class="form-input" placeholder="Enter your business name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Industry</label>
+                                <select class="form-select" required>
+                                    <option value="">Select your industry</option>
+                                    <option value="restaurant">Restaurant</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="ecommerce">E-commerce</option>
+                                    <option value="professional">Professional Services</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="fitness">Fitness</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Target Audience</label>
+                                <input type="text" class="form-input" placeholder="e.g., Young professionals, Families" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Brand Tone</label>
+                                <select class="form-select" required>
+                                    <option value="">Select your brand tone</option>
+                                    <option value="professional">Professional</option>
+                                    <option value="friendly">Friendly</option>
+                                    <option value="casual">Casual</option>
+                                    <option value="authoritative">Authoritative</option>
+                                    <option value="playful">Playful</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-full">Save Profile</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lead Generation Screen -->
+                <div id="leads-screen" class="screen hidden">
+                    <div class="form-container">
+                        <div class="text-center mb-6">
+                            <h2 class="dashboard-title">Generate Online Leads</h2>
+                            <p class="dashboard-subtitle">Set up your target audience to attract qualified leads</p>
+                        </div>
+
+                        <div class="audience-grid">
+                            <div class="audience-card">
+                                <div class="audience-label">Location</div>
+                                <div class="audience-value">United States</div>
+                            </div>
+                            <div class="audience-card">
+                                <div class="audience-label">Age Range</div>
+                                <div class="audience-value">25-54</div>
+                            </div>
+                            <div class="audience-card">
+                                <div class="audience-label">Gender</div>
+                                <div class="audience-value">All</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Interests</label>
+                            <div class="interests-container">
+                                <span class="interest-tag">Marketing</span>
+                                <span class="interest-tag">Social Media</span>
+                                <span class="interest-tag">Entrepreneurship</span>
+                                <span class="interest-tag">Small Business</span>
+                                <span class="interest-tag">Startup</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-full">Launch Lead Campaign</button>
+                    </div>
+                </div>
+
+                <!-- Content Creation Screen -->
+                <div id="content-screen" class="screen hidden">
+                    <div class="form-container">
+                        <div class="text-center mb-6">
+                            <h2 class="dashboard-title">Create Content</h2>
+                            <p class="dashboard-subtitle">Generate professional marketing content in seconds</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Content Type</label>
+                            <select class="form-select">
+                                <option value="social">Social Media Post</option>
+                                <option value="email">Email Campaign</option>
+                                <option value="blog">Blog Post</option>
+                                <option value="press">Press Release</option>
+                                <option value="response">Customer Response</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Content Brief</label>
+                            <textarea class="form-input" rows="4" placeholder="Describe what you want to create..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary w-full">Generate Content</button>
+                    </div>
+                </div>
+
+                <!-- Google Optimization Screen -->
+                <div id="google-screen" class="screen hidden">
+                    <div class="form-container">
+                        <div class="text-center mb-6">
+                            <h2 class="dashboard-title">Optimize Google Search</h2>
+                            <p class="dashboard-subtitle">Manage your Google Business Profile</p>
+                        </div>
+
+                        <div class="business-info">
+                            <div class="info-section">
+                                <div class="info-label">Business</div>
+                                <div class="info-value">Your Business Name</div>
+                            </div>
+
+                            <div class="info-section">
+                                <div class="info-label">Business Description</div>
+                                <div class="info-value">Professional services for small businesses</div>
+                            </div>
+
+                            <div class="info-section">
+                                <div class="info-label">Opening Hours</div>
+                                <div class="info-value">Mon-Fri: 9:00 AM - 6:00 PM</div>
+                            </div>
+
+                            <div class="info-section">
+                                <div class="info-label">Photos</div>
+                                <div class="photos-container">
+                                    <div class="photo-item"></div>
+                                    <div class="photo-upload">
+                                        <div class="upload-icon">+</div>
+                                        <div class="upload-text">Upload<br>Photo</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-full">Update Profile</button>
+                    </div>
+                </div>
+
+                <!-- Voice Interface Screen -->
+                <div id="voice-screen" class="screen hidden">
+                    <div class="voice-container">
+                        <h2 class="voice-title">"Hey Siri,<br>wake up MARC"</h2>
+                        
+                        <div class="voice-orb" id="voice-orb" onclick="toggleVoice()">
+                            <div class="voice-center"></div>
+                        </div>
+                        
+                        <p class="voice-instruction" id="voice-status">Tap to activate voice commands</p>
+                    </div>
+                </div>
+
+                <!-- Analytics Screen -->
+                <div id="analytics-screen" class="screen hidden">
+                    <div class="text-center mb-6">
+                        <h2 class="dashboard-title">Analytics Dashboard</h2>
+                        <p class="dashboard-subtitle">Track your marketing performance</p>
+                    </div>
+
+                    <div class="audience-grid">
+                        <div class="audience-card">
+                            <div class="audience-label">Content Created</div>
+                            <div class="audience-value" style="color: #3b82f6;">147</div>
+                            <div class="audience-label">This month</div>
+                        </div>
+                        <div class="audience-card">
+                            <div class="audience-label">Engagement Rate</div>
+                            <div class="audience-value" style="color: #10b981;">+24%</div>
+                            <div class="audience-label">vs last month</div>
+                        </div>
+                        <div class="audience-card">
+                            <div class="audience-label">Time Saved</div>
+                            <div class="audience-value" style="color: #8b5cf6;">42 hrs</div>
+                            <div class="audience-label">This month</div>
+                        </div>
+                        <div class="audience-card">
+                            <div class="audience-label">Leads Generated</div>
+                            <div class="audience-value" style="color: #f59e0b;">89</div>
+                            <div class="audience-label">This month</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Navigation
+        function switchScreen(screenName) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            
+            // Show selected screen
+            document.getElementById(screenName + '-screen').classList.remove('hidden');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-screen="${screenName}"]`).classList.add('active');
+            
+            // Update page title
+            const titles = {
+                dashboard: 'Dashboard',
+                profile: 'Business Profile',
+                leads: 'Lead Generation',
+                content: 'Content Creation',
+                google: 'Google Optimization',
+                voice: 'Voice Interface',
+                analytics: 'Analytics'
+            };
+            document.getElementById('page-title').textContent = titles[screenName] || 'MARC';
+        }
+
+        // Voice interface
+        let isVoiceActive = false;
+        function toggleVoice() {
+            const orb = document.getElementById('voice-orb');
+            const status = document.getElementById('voice-status');
+            
+            isVoiceActive = !isVoiceActive;
+            
+            if (isVoiceActive) {
+                orb.classList.add('active');
+                status.textContent = 'Listening... Say your command';
+                
+                // Simulate voice recognition
+                setTimeout(() => {
+                    status.textContent = 'Processing your request...';
+                }, 2000);
+                
+                setTimeout(() => {
+                    isVoiceActive = false;
+                    orb.classList.remove('active');
+                    status.textContent = 'Command processed! Tap to try again';
+                }, 4000);
+            }
+        }
+
+        // Navigation event listeners
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const screen = link.getAttribute('data-screen');
+                switchScreen(screen);
+            });
+        });
+
+        // Form submissions
+        document.getElementById('profile-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Profile saved successfully!');
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            switchScreen('dashboard');
+        });
+    </script>
+</body>
+</html>
