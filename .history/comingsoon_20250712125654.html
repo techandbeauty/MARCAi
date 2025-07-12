@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - MARC Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #1d1d1f;
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-actions a {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .nav-actions a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 24px 80px;
+            text-align: center;
+        }
+
+        .content-container {
+            max-width: 800px;
+        }
+
+        .coming-soon-icon {
+            width: 120px;
+            height: 120px;
+            background: #f5f5f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 40px;
+            font-size: 48px;
+        }
+
+        .main-title {
+            font-size: clamp(48px, 6vw, 72px);
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+        }
+
+        .subtitle {
+            font-size: 28px;
+            font-weight: 400;
+            color: #86868b;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+
+        .description {
+            font-size: 21px;
+            line-height: 1.5;
+            margin-bottom: 48px;
+            color: #1d1d1f;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Features Preview */
+        .features-preview {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 48px;
+            margin-bottom: 48px;
+        }
+
+        .features-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            color: #1d1d1f;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: #0066cc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .feature-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .feature-content p {
+            font-size: 15px;
+            color: #86868b;
+            line-height: 1.4;
+        }
+
+        /* Timeline */
+        .timeline {
+            background: white;
+            border-radius: 20px;
+            padding: 48px;
+            margin-bottom: 48px;
+            border: 1px solid #e8e8ed;
+        }
+
+        .timeline-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            color: #1d1d1f;
+            text-align: center;
+        }
+
+        .timeline-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+        }
+
+        .timeline-item {
+            text-align: center;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+
+        .timeline-date {
+            background: #0066cc;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .timeline-item h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item p {
+            font-size: 14px;
+            color: #86868b;
+            line-height: 1.4;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+        }
+
+        .btn-secondary:hover {
+            background: #0066cc;
+            color: white;
+        }
+
+        .notification-signup {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .notification-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+
+        .notification-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .notification-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 1px solid #e5e5e7;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .notification-input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        .notify-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .notify-btn:hover {
+            background: #0052a3;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f5f5f7;
+            padding: 40px 24px;
+            text-align: center;
+            border-top: 1px solid #e8e8ed;
+            margin-top: 80px;
+        }
+
+        .footer p {
+            color: #86868b;
+            font-size: 15px;
+        }
+
+        .footer a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 48px;
+            }
+            
+            .subtitle {
+                font-size: 24px;
+            }
+            
+            .description {
+                font-size: 19px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .notification-form {
+                flex-direction: column;
+            }
+            
+            .notification-input {
+                min-width: auto;
+            }
+        }
+
+        /* Smooth animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .success-message {
+            background: #e8f5e8;
+            color: #2d5a2d;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">MARC</a>
+            <div class="nav-actions">
+                <a href="index.html">← Back to Homepage</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-container">
+            <div class="coming-soon-icon animate-in">🚀</div>
+            
+            <h1 class="main-title animate-in">Coming Soon</h1>
+            <p class="subtitle animate-in">Your MARC dashboard is being built</p>
+            <p class="description animate-in">
+                We're putting the finishing touches on your personalized MARC experience. Get ready for AI-powered marketing that actually grows your business.
+            </p>
+
+            <div class="features-preview animate-in">
+                <h2 class="features-title">What's coming to your dashboard:</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-content">
+                            <h3>AI Strategy Builder</h3>
+                            <p>Custom marketing strategies tailored to your business goals and market</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💬</div>
+                        <div class="feature-content">
+                            <h3>Voice Commands</h3>
+                            <p>"Hey MARC, create a campaign to boost sales this month" - and it's done</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-content">
+                            <h3>Performance Analytics</h3>
+                            <p>Real-time insights into what's driving revenue and growth for your business</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-content">
+                            <h3>Campaign Automation</h3>
+                            <p>Complete marketing campaigns created and executed while you focus on customers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline animate-in">
+                <h2 class="timeline-title">Development Timeline</h2>
+                <div class="timeline-items">
+                    <div class="timeline-item">
+                        <div class="timeline-date">August 2025</div>
+                        <h3>Beta Launch</h3>
+                        <p>Early access for waitlist members with core features</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">September 2025</div>
+                        <h3>Voice Interface</h3>
+                        <p>Voice commands and AI assistant interactions go live</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">October 2025</div>
+                        <h3>Full Launch</h3>
+                        <p>Complete platform with all features available to everyone</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <div class="cta-buttons animate-in">
+                    <a href="index.html" class="btn btn-primary">Back to Homepage</a>
+                    <a href="mailto:hello@marc.ai" class="btn btn-secondary">Contact Support</a>
+                </div>
+
+                <div class="notification-signup animate-in">
+                    <h3 class="notification-title">Get notified when MARC is ready</h3>
+                    <form class="notification-form" id="notifyForm">
+                        <input 
+                            type="email" 
+                            class="notification-input" 
+                            placeholder="Enter your email for updates"
+                            required
+                        >
+                        <button type="submit" class="notify-btn">Notify Me</button>
+                    </form>
+                    <div class="success-message" id="successMessage">
+                        ✅ Thanks! We'll email you as soon as MARC is ready.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Questions? Email us at <a href="mailto:hello@marc.ai">hello@marc.ai</a></p>
+        <p style="margin-top: 16px;">&copy; 2025 MARC. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Notification signup
+        document.getElementById('notifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Reset form
+            this.reset();
+            
+            // In a real app, you'd submit this to your email service
+            console.log('Email notification signup submitted');
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.animate-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
