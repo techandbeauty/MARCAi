@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARC - Social Media Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            color: #1c1c1e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #1c1c1e;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .voice-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .compose-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .platform-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .platform-chip {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .platform-chip:hover {
+            background: #e0e0e0;
+        }
+
+        .platform-chip.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .compose-area {
+            margin-bottom: 24px;
+        }
+
+        .text-area {
+            width: 100%;
+            min-height: 150px;
+            background: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .text-area:focus {
+            border-color: #667eea;
+        }
+
+        .compose-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            background: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-1px);
+        }
+
+        .char-count {
+            font-size: 14px;
+            color: #8e8e93;
+        }
+
+        .schedule-section {
+            margin: 24px 0;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 12px;
+        }
+
+        .schedule-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .toggle::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle.active::after {
+            transform: translateX(20px);
+        }
+
+        .datetime-picker {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #1c1c1e;
+            margin-right: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ai-suggestions {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .suggestion-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .suggestion-item {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+
+        .suggestion-text {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .analytics-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #8e8e93;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #34c759;
+        }
+
+        .recent-posts {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .post-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-platform {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .facebook { background: #1877f2; color: white; }
+        .linkedin { background: #0a66c2; color: white; }
+        .twitter { background: #1da1f2; color: white; }
+        .instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); color: white; }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-text {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #1c1c1e;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .post-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #e8f5e8;
+            color: #34c759;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 16px 20px;
+            }
+            
+            .compose-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <a href="app.html" class="back-btn">← Back</a>
+                <h1 class="page-title">Social Media Manager</h1>
+            </div>
+            <button class="voice-btn" onclick="activateVoice()">🎤</button>
+        </header>
+
+        <div class="main-grid">
+            <div class="compose-section">
+                <h2 class="section-title">Create Post</h2>
+                
+                <div class="platform-selector">
+                    <div class="platform-chip" data-platform="facebook">📘 Facebook</div>
+                    <div class="platform-chip" data-platform="linkedin">💼 LinkedIn</div>
+                    <div class="platform-chip" data-platform="instagram">📱 Instagram</div>
+                    <div class="platform-chip" data-platform="twitter">🐦 Twitter</div>
+                </div>
+                
+                <div class="compose-area">
+                    <textarea class="text-area" id="postContent" placeholder="What's on your mind? Ask MARC to help create engaging content...">🚀 Excited to share our latest productivity tips! Here are 5 ways small businesses can save 20+ hours per week with AI automation:
+
+1. Automated email responses
+2. Social media scheduling  
+3. Lead qualification
+4. Content creation
+5. Analytics reporting
+
+What tasks would you automate first? 
+
+#SmallBusiness #AI #Productivity</textarea>
+                    
+                    <div class="compose-actions">
+                        <div class="action-buttons">
+                            <div class="action-btn" title="Add Image">📷</div>
+                            <div class="action-btn" title="Add Video">🎥</div>
+                            <div class="action-btn" title="Add Poll">📊</div>
+                            <div class="action-btn" title="Add Link">🔗</div>
+                            <div class="action-btn" title="AI Enhance">✨</div>
+                        </div>
+                        <div class="char-count"><span id="charCount">247</span>/280</div>
+                    </div>
+                </div>
+                
+                <div class="schedule-section">
+                    <div class="schedule-toggle">
+                        <span>Schedule for later</span>
+                        <div class="toggle" id="scheduleToggle"></div>
+                    </div>
+                    <input type="datetime-local" class="datetime-picker" id="scheduleDatetime" value="2025-07-12T14:00" style="display: none;">
+                </div>
+                
+                <div style="display: flex; align-items: center;">
+                    <button class="btn btn-secondary" onclick="saveDraft()">Save Draft</button>
+                    <button class="btn btn-primary" id="publishBtn" onclick="publishPost()">Post Now</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ai-suggestions">
+                    <div class="suggestion-header">
+                        <span style="font-size: 20px; font-weight: 600;">🤖 MARC's Suggestions</span>
+                    </div>
+                    <div class="suggestion-item" onclick="applySuggestion(this)">
+                        <div class="suggestion-text">"Add relevant hashtags for better reach: #Entrepreneur #BusinessTips #Automation"</div>
+                        <div class="suggestion-meta">
+                            <span>+15% engagement</span>
+                            <span style="color: #667eea; cursor: pointer;">Apply</span>
+                        </div>
+                    </div>
+                    <div class="suggestion-item" onclick="applySuggestion(this)">
+                        <div class="suggestion-text">"Post at 2:00 PM for optimal engagement based on your audience analytics"</div>
+                        <div class="suggestion-meta">
+                            <span>Best time</span>
+                            <span style="color: #667eea; cursor: pointer;">Schedule</span>
+                        </div>
+                    </div>
+                    <div class="suggestion-item" onclick="applySuggestion(this)">
+                        <div class="suggestion-text">"Add a call-to-action: 'Comment below with your automation ideas!'"</div>
+                        <div class="suggestion-meta">
+                            <span>+25% comments</span>
+                            <span style="color: #667eea; cursor: pointer;">Apply</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <h3 class="section-title">Quick Stats</h3>
+                    <div class="metric">
+                        <span class="metric-label">This Week's Reach</span>
+                        <span class="metric-value">12.4K</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Engagement Rate</span>
+                        <span class="metric-value">4.2%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">New Followers</span>
+                        <span class="metric-value">+147</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Best Performing Post</span>
+                        <span class="metric-value">892 likes</span>
+                    </div>
+                </div>
+
+                <div class="recent-posts">
+                    <h3 class="section-title">Recent Posts</h3>
+                    <div class="post-item">
+                        <div class="post-platform linkedin">💼</div>
+                        <div class="post-info">
+                            <div class="post-text">5 productivity tips for entrepreneurs...</div>
+                            <div class="post-time">2 hours ago</div>
+                        </div>
+                        <div class="post-status">Published</div>
+                    </div>
+                    <div class="post-item">
+                        <div class="post-platform facebook">📘</div>
+                        <div class="post-info">
+                            <div class="post-text">Check out our latest blog post on AI...</div>
+                            <div class="post-time">6 hours ago</div>
+                        </div>
+                        <div class="post-status">Published</div>
+                    </div>
+                    <div class="post-item">
+                        <div class="post-platform instagram">📱</div>
+                        <div class="post-info">
+                            <div class="post-text">Behind the scenes at our office...</div>
+                            <div class="post-time">1 day ago</div>
+                        </div>
+                        <div class="post-status">Published</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPlatforms = [];
+        let isScheduled = false;
+
+        // Platform selection
+        document.querySelectorAll('.platform-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('selected');
+                const platform = chip.dataset.platform;
+                
+                if (selectedPlatforms.includes(platform)) {
+                    selectedPlatforms = selectedPlatforms.filter(p => p !== platform);
+                } else {
+                    selectedPlatforms.push(platform);
+                }
+                
+                updatePublishButton();
+            });
+        });
+
+        // Character counter
+        const textarea = document.getElementById('postContent');
+        const charCount = document.getElementById('charCount');
+
+        textarea.addEventListener('input', () => {
+            const count = textarea.value.length;
+            charCount.textContent = count;
+            
+            if (count > 280) {
+                charCount.style.color = '#ff3b30';
+            } else if (count > 240) {
+                charCount.style.color = '#ff9500';
+            } else {
+                charCount.style.color = '#8e8e93';
+            }
+        });
+
+        // Schedule toggle
+        const scheduleToggle = document.getElementById('scheduleToggle');
+        const scheduleDatetime = document.getElementById('scheduleDatetime');
+        const publishBtn = document.getElementById('publishBtn');
+
+        scheduleToggle.addEventListener('click', () => {
+            isScheduled = !isScheduled;
+            scheduleToggle.classList.toggle('active');
+            
+            if (isScheduled) {
+                scheduleDatetime.style.display = 'block';
+                publishBtn.textContent = 'Schedule Post';
+            } else {
+                scheduleDatetime.style.display = 'none';
+                publishBtn.textContent = 'Post Now';
+            }
+        });
+
+        function updatePublishButton() {
+            const publishBtn = document.getElementById('publishBtn');
+            if (selectedPlatforms.length === 0) {
+                publishBtn.disabled = true;
+                publishBtn.style.opacity = '0.5';
+            } else {
+                publishBtn.disabled = false;
+                publishBtn.style.opacity = '1';
+            }
+        }
+
+        function applySuggestion(element) {
+            const suggestionText = element.querySelector('.suggestion-text').textContent;
+            
+            if (suggestionText.includes('hashtags')) {
+                const currentText = textarea.value;
+                const hashtags = ' #Entrepreneur #BusinessTips #Automation';
+                textarea.value = currentText + hashtags;
+                textarea.dispatchEvent(new Event('input'));
+            } else if (suggestionText.includes('2:00 PM')) {
+                document.getElementById('scheduleDatetime').value = '2025-07-12T14:00';
+                scheduleToggle.click();
+            } else if (suggestionText.includes('call-to-action')) {
+                const currentText = textarea.value;
+                const cta = '\n\nComment below with your automation ideas!';
+                textarea.value = currentText + cta;
+                textarea.dispatchEvent(new Event('input'));
+            }
+            
+            // Visual feedback
+            element.style.background = '#e8f5e8';
+            element.style.borderColor = '#34c759';
+            setTimeout(() => {
+                element.style.background = '#f8f8f8';
+                element.style.borderColor = 'transparent';
+            }, 1000);
+        }
+
+        function saveDraft() {
+            const postData = {
+                content: textarea.value,
+                platforms: selectedPlatforms,
+                scheduled: isScheduled,
+                scheduledTime: isScheduled ? scheduleDatetime.value : null,
+                savedAt: new Date()
+            };
+            
+            // In a real app, save to database
+            localStorage.setItem('draft_post', JSON.stringify(postData));
+            
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Saved!';
+            btn.style.background = '#34c759';
+            btn.style.color = 'white';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '#f0f0f0';
+                btn.style.color = '#1c1c1e';
+            }, 2000);
+        }
+
+        function publishPost() {
+            if (selectedPlatforms.length === 0) {
+                alert('Please select at least one platform');
+                return;
+            }
+            
+            const postData = {
+                content: textarea.value,
+                platforms: selectedPlatforms,
+                scheduled: isScheduled,
+                scheduledTime: isScheduled ? scheduleDatetime.value : null,
+                publishedAt: new Date()
+            };
+            
+            // Simulate posting
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Publishing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.textContent = isScheduled ? 'Scheduled!' : 'Posted!';
+                btn.style.background = '#34c759';
+                
+                setTimeout(() => {
+                    // Reset form
+                    textarea.value = '';
+                    selectedPlatforms = [];
+                    document.querySelectorAll('.platform-chip').forEach(chip => {
+                        chip.classList.remove('selected');
+                    });
+                    
+                    btn.textContent = 'Post Now';
+                    btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    btn.disabled = false;
+                    isScheduled = false;
+                    scheduleToggle.classList.remove('active');
+                    scheduleDatetime.style.display = 'none';
+                    
+                    textarea.dispatchEvent(new Event('input'));
+                }, 2000);
+            }, 1500);
+        }
+
+        function activateVoice() {
+            alert('Voice command activated! In a real app, this would open the voice interface.');
+        }
+
+        // Initialize
+        updatePublishButton();
+    </script>
+</body>
+</html>
