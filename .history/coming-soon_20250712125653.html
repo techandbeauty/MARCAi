@@ -422,10 +422,10 @@
         <div class="content-container">
             <div class="coming-soon-icon animate-in">🚀</div>
             
-            <h1 class="main-title animate-in">You're In!</h1>
-            <p class="subtitle animate-in">Your MARC account is ready</p>
+            <h1 class="main-title animate-in">Coming Soon</h1>
+            <p class="subtitle animate-in">Your MARC dashboard is being built</p>
             <p class="description animate-in">
-                Welcome to MARC! Your AI marketing assistant is being prepared with your business details. You'll receive your access credentials and getting started guide via email within the next few hours.
+                We're putting the finishing touches on your personalized MARC experience. Get ready for AI-powered marketing that actually grows your business.
             </p>
 
             <div class="features-preview animate-in">
@@ -463,22 +463,22 @@
             </div>
 
             <div class="timeline animate-in">
-                <h2 class="timeline-title">What's Next</h2>
+                <h2 class="timeline-title">Development Timeline</h2>
                 <div class="timeline-items">
                     <div class="timeline-item">
-                        <div class="timeline-date">This Week</div>
-                        <h3>Account Setup</h3>
-                        <p>Your account is created and you'll receive access instructions via email</p>
+                        <div class="timeline-date">August 2025</div>
+                        <h3>Beta Launch</h3>
+                        <p>Early access for waitlist members with core features</p>
                     </div>
                     <div class="timeline-item">
-                        <div class="timeline-date">Next 30 Days</div>
-                        <h3>Beta Access</h3>
-                        <p>Early access to core MARC features and AI-powered marketing tools</p>
+                        <div class="timeline-date">September 2025</div>
+                        <h3>Voice Interface</h3>
+                        <p>Voice commands and AI assistant interactions go live</p>
                     </div>
                     <div class="timeline-item">
-                        <div class="timeline-date">Full Launch</div>
-                        <h3>Complete Platform</h3>
-                        <p>All features including voice commands, automation, and advanced analytics</p>
+                        <div class="timeline-date">October 2025</div>
+                        <h3>Full Launch</h3>
+                        <p>Complete platform with all features available to everyone</p>
                     </div>
                 </div>
             </div>
@@ -490,12 +490,18 @@
                 </div>
 
                 <div class="notification-signup animate-in">
-                    <h3 class="notification-title">Questions? We're here to help</h3>
-                    <div style="text-align: center;">
-                        <p style="margin-bottom: 20px; color: #86868b;">
-                            Check your email for access instructions, or contact our support team if you need assistance.
-                        </p>
-                        <a href="mailto:hello@marc.ai" class="btn btn-primary">Contact Support</a>
+                    <h3 class="notification-title">Get notified when MARC is ready</h3>
+                    <form class="notification-form" id="notifyForm">
+                        <input 
+                            type="email" 
+                            class="notification-input" 
+                            placeholder="Enter your email for updates"
+                            required
+                        >
+                        <button type="submit" class="notify-btn">Notify Me</button>
+                    </form>
+                    <div class="success-message" id="successMessage">
+                        ✅ Thanks! We'll email you as soon as MARC is ready.
                     </div>
                 </div>
             </div>
@@ -509,6 +515,20 @@
     </footer>
 
     <script>
+        // Notification signup
+        document.getElementById('notifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Reset form
+            this.reset();
+            
+            // In a real app, you'd submit this to your email service
+            console.log('Email notification signup submitted');
+        });
+
         // Animate elements on scroll
         const observerOptions = {
             threshold: 0.1,
