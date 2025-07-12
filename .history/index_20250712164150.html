@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARC - AI Marketing Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #1d1d1f;
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation - Apple/Sony style */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.2s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 400;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-cta {
+            background: #0066cc;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: #0052a3;
+            transform: translateY(-1px);
+        }
+
+
+
+        /* Hero Section - Ultra clean like Apple */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #ffffff;
+            padding: 120px 24px 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 6vw, 80px);
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+        }
+
+        .hero-subtitle {
+            font-size: 28px;
+            font-weight: 400;
+            color: #86868b;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-description {
+            font-size: 21px;
+            font-weight: 400;
+            color: #1d1d1f;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+        }
+
+        .btn-secondary:hover {
+            background: #0066cc;
+            color: white;
+        }
+
+        .launch-badge {
+            display: inline-block;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            margin-top: 32px;
+        }
+
+        /* Features - Sony/UE style grid */
+        .section {
+            padding: 120px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-small {
+            padding: 80px 24px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1d1d1f;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 21px;
+            font-weight: 400;
+            color: #86868b;
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #f5f5f7;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            font-size: 32px;
+        }
+
+        .feature h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .feature p {
+            font-size: 17px;
+            color: #86868b;
+            line-height: 1.5;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        /* Problem section - Dark like Unreal Engine */
+        .problem-section {
+            background: #000000;
+            color: white;
+            padding: 120px 24px;
+        }
+
+        .problem-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .problem-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .problem-subtitle {
+            font-size: 21px;
+            color: #86868b;
+            margin-bottom: 80px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 64px;
+            font-weight: 600;
+            color: #0066cc;
+            display: block;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 17px;
+            color: #86868b;
+            line-height: 1.4;
+        }
+
+        /* Pricing - Clean Apple style */
+        .pricing-section {
+            background: #f5f5f7;
+            padding: 120px 24px;
+        }
+
+        .pricing-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            margin-top: 80px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #e8e8ed;
+            transition: all 0.2s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card.featured {
+            border-color: #0066cc;
+            position: relative;
+        }
+
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0066cc;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .plan-period {
+            font-size: 17px;
+            color: #86868b;
+            margin-bottom: 32px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .plan-features li {
+            font-size: 17px;
+            color: #1d1d1f;
+            padding: 8px 0;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #0066cc;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #0066cc;
+            color: white;
+            padding: 120px 24px;
+            text-align: center;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-subtitle {
+            font-size: 21px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .lead-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .full-width {
+            margin-bottom: 24px;
+        }
+
+        .lead-form input,
+        .lead-form select,
+        .lead-form textarea {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lead-form input::placeholder,
+        .lead-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .lead-form select {
+            color: white;
+            cursor: pointer;
+        }
+
+        .lead-form select option {
+            background: #0066cc;
+            color: white;
+        }
+
+        .lead-form input:focus,
+        .lead-form select:focus,
+        .lead-form textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .lead-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .signup-btn {
+            background: white;
+            color: #0066cc;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .success-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 24px;
+            display: none;
+            backdrop-filter: blur(20px);
+        }
+
+        /* Footer */
+        .footer {
+            background: #f5f5f7;
+            padding: 40px 24px;
+            text-align: center;
+            border-top: 1px solid #e8e8ed;
+        }
+
+        .footer p {
+            color: #86868b;
+            font-size: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .hero-subtitle {
+                font-size: 24px;
+            }
+            
+            .hero-description {
+                font-size: 19px;
+            }
+            
+            .section-title {
+                font-size: 36px;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .lead-form input,
+            .lead-form select,
+            .lead-form textarea,
+            .signup-btn {
+                width: 100%;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Subtle animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="logo">MARC</a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#early-access" class="nav-cta">Get Early Access</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-subtitle">Meet MARC</div>
+            <h1>AI Marketing Assistant</h1>
+            <p class="hero-description">Marketing. AI. Relations & Communications.<br>Strategic marketing that actually grows your business. MARC handles strategy, creates content, and executes campaigns so you can focus on making money.</p>
+            <div class="hero-cta">
+                <a href=" " class="btn btn-primary" onclick="selectPlan('Business', '$299')">Join Waitlist</a>
+                <a href="#features" class="btn btn-secondary">Learn More</a>
+            </div>
+            <div class="launch-badge">Launching October 2025</div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section section-small">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title">What is MARC?</h2>
+            <p class="section-subtitle">MARC (Marketing, AI, Relations & Communications) is an AI assistant that handles your entire marketing operation—from strategy to execution—so you can focus on growing your business and making money.</p>
+            
+            <div style="text-align: left; font-size: 19px; line-height: 1.6; color: #1d1d1f; margin-top: 40px;">
+                <p style="margin-bottom: 24px;">
+                    Small businesses shouldn't have to choose between effective marketing and profitability. MARC eliminates that trade-off by providing strategic marketing intelligence that actually drives revenue growth.
+                </p>
+                
+                <p style="margin-bottom: 24px;">
+                    MARC doesn't just create content—it develops marketing strategies tailored to your business, creates compelling content that converts, and executes campaigns across multiple channels. All while learning what works best for your specific market.
+                </p>
+                
+                <p style="margin-bottom: 0;">
+                    Think of MARC as your strategic marketing partner who understands your business goals, creates everything you need, and executes with precision—so you can focus on what you do best: serving customers and growing revenue.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <h2 class="section-title">Strategy. Content. Execution.</h2>
+        <p class="section-subtitle">MARC handles the complete marketing cycle so you can focus on growing your business and generating revenue.</p>
+        
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3>Strategic Planning</h3>
+                <p>MARC analyzes your business and market to create data-driven marketing strategies that actually drive growth and revenue.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <h3>Voice-Powered Execution</h3>
+                <p>"Hey MARC, create a campaign to increase sales this month." Get complete strategies and content through simple voice commands.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3>Revenue-Focused Content</h3>
+                <p>Creates content designed to convert prospects into customers. Every post, email, and campaign is optimized for business growth.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <h3>Growth-Driven Campaigns</h3>
+                <p>Develops and executes multi-channel campaigns focused on generating leads, nurturing prospects, and driving sales.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Complete Automation</h3>
+                <p>From strategy development to content creation to campaign execution—MARC handles everything while you focus on serving customers.</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Results That Matter</h3>
+                <p>Tracks what actually impacts your bottom line. Optimizes campaigns for revenue, not just engagement metrics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="problem-container">
+            <h2 class="problem-title">Small Businesses Deserve to Grow</h2>
+            <p class="problem-subtitle">You started your business to make money and serve customers, not to become a marketing expert. MARC handles the marketing so you can focus on growth.</p>
+            
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-number">73%</span>
+                    <span class="stat-label">of small businesses struggle with effective marketing that actually drives sales</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">$4.5K</span>
+                    <span class="stat-label">average monthly cost for professional marketing agency retainer fees</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">20hrs</span>
+                    <span class="stat-label">average weekly time business owners spend on marketing instead of growing their business</span>
+                </div>
+            </div>
+            
+            <p style="font-size: 24px; font-weight: 500;">MARC gives you strategic marketing that actually grows your business.</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="pricing-container">
+            <h2 class="section-title">Marketing That Pays For Itself</h2>
+            <p class="section-subtitle">Invest in growth, not overhead. MARC delivers strategic marketing that drives revenue from day one.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 class="plan-name">Professional</h3>
+                    <div class="plan-price">$179</div>
+                    <div class="plan-period">per month</div>
+                    <ul class="plan-features">
+                        <li>Unlimited AI content generation</li>
+                        <li>Voice command interface</li>
+                        <li>Brand voice training & consistency</li>
+                        <li>Multi-platform scheduling</li>
+                        <li>Email campaign creation</li>
+                        <li>Lead research & qualification tools</li>
+                        <li>Performance analytics dashboard</li>
+                        <li>Content calendar management</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#early-access" class="btn btn-secondary" onclick="selectPlan('Professional', '$179')">Get Started</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3 class="plan-name">Business</h3>
+                    <div class="plan-price">$299</div>
+                    <div class="plan-period">per month</div>
+                    <ul class="plan-features">
+                        <li>Everything in Professional</li>
+                        <li>Advanced automation workflows</li>
+                        <li>CRM integration capabilities</li>
+                        <li>Multi-sequence campaign management</li>
+                        <li>Team collaboration features</li>
+                        <li>Custom brand training</li>
+                        <li>Advanced reporting & insights</li>
+                        <li>Competitor analysis tools</li>
+                        <li>Priority support & strategy calls</li>
+                        <li>API access for integrations</li>
+                        <li>White-label reporting options</li>
+                    </ul>
+                    <a href="#early-access" class="btn btn-primary" onclick="selectPlan('Business', '$299')">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="early-access" class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">Ready to Grow Your Business?</h2>
+            <p class="cta-subtitle">Join the waitlist for MARC and get marketing that actually drives revenue. Early access members help shape the product.</p>
+            
+            <form class="lead-form" id="leadForm">
+                <input type="hidden" name="form-name" value="marc-waitlist">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Business Email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" name="company" placeholder="Company Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Phone Number (Optional)">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <select name="marketingSpend" required>
+                            <option value="">Current Marketing Spend/Month</option>
+                            <option value="Under $500">Under $500</option>
+                            <option value="$500 - $2,000">$500 - $2,000</option>
+                            <option value="$2,000 - $5,000">$2,000 - $5,000</option>
+                            <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                            <option value="$10,000+">$10,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="interestedPlan" id="planSelect" required>
+                            <option value="">Interested Plan</option>
+                            <option value="Professional - $179/month">Professional - $179/month</option>
+                            <option value="Business - $299/month">Business - $299/month</option>
+                            <option value="Not sure yet">Not sure yet</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <textarea name="currentChallenges" placeholder="What's keeping you from growing your business faster? (lead generation, content creation, campaign execution, etc.)" rows="3" required></textarea>
+                </div>
+                
+                <button type="submit" class="signup-btn">Join Waitlist</button>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                🎉 You're in! Check your email for updates and early access details. We'll be in touch soon.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 MARC. All rights reserved. Built with ❤️ for small businesses.</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAl6obOlOzpeR8-8EV-Tjq7rfN4vx_EqUU",
+            authDomain: "marc-9d570.firebaseapp.com",
+            projectId: "marc-9d570",
+            storageBucket: "marc-9d570.firebasestorage.app",
+            messagingSenderId: "924997385177",
+            appId: "1:924997385177:web:70ca4796bd0252b9b577c8",
+            measurementId: "G-TRHCLPVSRF"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Check if user is already logged in and redirect to dashboard
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Make submitToFirebase available globally
+        window.submitToFirebase = async function(formData) {
+            try {
+                const leadData = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    company: formData.get('company'),
+                    phone: formData.get('phone') || '',
+                    marketingSpend: formData.get('marketingSpend'),
+                    interestedPlan: formData.get('interestedPlan'),
+                    currentChallenges: formData.get('currentChallenges'),
+                    timestamp: serverTimestamp(),
+                    source: 'landing-page'
+                };
+
+                const docRef = await addDoc(collection(db, 'marc-leads'), leadData);
+                console.log('Firebase: Lead saved with ID:', docRef.id);
+                return true;
+            } catch (error) {
+                console.error('Firebase Error:', error);
+                return false;
+            }
+        };
+    </script>
+
+    <script>
+        // Plan selection from pricing cards
+        function selectPlan(planName, planPrice) {
+            const planSelect = document.getElementById('planSelect');
+            planSelect.value = `${planName} - ${planPrice}/month`;
+            
+            // Scroll to form
+            document.getElementById('early-access').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // PRODUCTION READY: Form submission with Netlify + Firebase
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('.signup-btn');
+            
+            // Show loading state
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Submit to Netlify Forms
+                const netlifyResponse = await fetch('/', {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(formData).toString()
+                });
+
+                // Submit to Firebase Database
+                if (window.submitToFirebase) {
+                    await window.submitToFirebase(formData);
+                }
+
+                // Redirect to thank you page
+                window.location.href = 'thank-you.html';
+                
+            } catch (error) {
+                console.error('Submission Error:', error);
+                // Still redirect on error - user experience is priority
+                window.location.href = 'thank-you.html';
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.feature, .pricing-card, .stat').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Nav background on scroll
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.8)';
+            }
+        });
+    </script>
+</body>
+</html>
