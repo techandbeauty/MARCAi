@@ -621,6 +621,7 @@
             </p>
             <div class="hero-cta animate-in">
                 <button class="btn btn-primary" onclick="showSignupModal()">Create My MARC Account</button>
+                <button class="btn btn-secondary" onclick="goToComingSoon()">Skip to Dashboard Preview</button>
                 <a href="index.html" class="btn btn-secondary">Back to Homepage</a>
             </div>
         </div>
@@ -692,6 +693,7 @@
             <h2 class="cta-title">Ready to get started?</h2>
             <p class="cta-subtitle">Create your MARC account now to begin your marketing transformation</p>
             <button class="cta-btn" onclick="showSignupModal()">Create My MARC Account</button>
+            <button class="cta-btn cta-btn-secondary" onclick="goToComingSoon()">Skip to Dashboard Preview</button>
             <a href="index.html" class="cta-btn cta-btn-secondary">Back to Homepage</a>
         </div>
     </section>
@@ -732,13 +734,19 @@
         // Check if user is already logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'coming-soon.html';
             }
         });
     </script>
 
     <script>
         let isSignupMode = false;
+
+        // ADDED: Direct function to go to coming-soon.html
+        function goToComingSoon() {
+            console.log('Redirecting to coming-soon.html...');
+            window.location.href = 'coming-soon.html';
+        }
 
         function showLoginModal() {
             isSignupMode = false;
@@ -800,7 +808,7 @@
             document.getElementById('errorMessage').style.display = 'none';
         }
 
-        // Auth form submission - PRODUCTION READY
+        // FIXED: Auth form submission - always redirects to coming-soon.html
         document.getElementById('authForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -826,12 +834,13 @@
                         plan: 'free-trial'
                     });
                     
-                    // Redirect to coming soon page
+                    // FIXED: Always redirect to coming-soon page
+                    console.log('Account created, redirecting to coming-soon.html...');
                     window.location.href = 'coming-soon.html';
                 } else {
                     // Sign in existing user
                     await window.signInWithEmailAndPassword(window.auth, email, password);
-                    // Firebase auth listener will handle redirect
+                    // Firebase auth listener will handle redirect to coming-soon.html
                 }
             } catch (error) {
                 let errorMessage = 'An error occurred. Please try again.';
